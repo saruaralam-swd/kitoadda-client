@@ -13,9 +13,11 @@ const AddPost = () => {
     formData.append('image', image);
 
     if (data.image.length === 0) {
-      console.log('1')
+      console.log('vai image select nai');
+      
     }
     else {
+      console.log('img selected ace');
       fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
         method: "POST",
         body: formData,
