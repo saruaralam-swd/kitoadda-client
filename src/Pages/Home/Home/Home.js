@@ -1,9 +1,10 @@
 import React from 'react';
+import AddPost from '../AddPost/AddPost';
 
 const Home = () => {
   return (
-    <div className='bg-slate-100'>
-      asdfsd
+    <div>
+      <AddPost />
     </div>
   );
 };
