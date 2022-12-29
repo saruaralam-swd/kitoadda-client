@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../../assets/favicon.png'
 import { MdLogout, MdSettings } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
-import profilePlaceholder from '../../../assets/profile.png'
+import profilePlaceholder from '../../../assets/profile.png';
 import { GoThreeBars } from "react-icons/go";
 import { AiOutlineHome } from "react-icons/ai";
 import { FcAbout } from "react-icons/fc";
@@ -12,7 +12,6 @@ import { AuthContext } from '../../../Context/AuthProvider';
 
 const Header = () => {
   const { user, logOut } = useContext(AuthContext);
-
 
   const handleLogOut = () => {
     logOut()
@@ -24,7 +23,8 @@ const Header = () => {
 
   const menuItem = <>
     <li className='hover:bg-[#3A3B3C]'><Link to='/'><AiOutlineHome />Home</Link></li>
-    <li className='hover:bg-[#3A3B3C]'><Link to='/'><TbMessageCircle /> Message</Link></li>
+    {/* <li className='hover:bg-[#3A3B3C]'><Link to='/'><TbMessageCircle /> Message</Link></li> */}
+    <li className='hover:bg-[#3A3B3C]'><Link to='/media'> Media</Link></li>
   </>
 
   const profile = <>
