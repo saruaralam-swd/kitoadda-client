@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
       {
         path: '/media',
         element: <AllPosts />
-      },
+      }
     ]
   },
   {

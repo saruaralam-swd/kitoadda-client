@@ -40,7 +40,7 @@ const Header = () => {
       </Link>
     </li>
     <li className='hover:bg-[#3A3B3C]'><Link><CgProfile /> Profile </Link></li>
-    <li className='hover:bg-[#3A3B3C]'><Link><FcAbout /> About me</Link></li>
+    <li className='hover:bg-[#3A3B3C]'><Link to='/aboutMe'><FcAbout /> About me</Link></li>
     <li className='hover:bg-[#3A3B3C]'><Link><MdSettings /> Settings</Link></li>
     <li onClick={handleLogOut} className='hover:bg-[#3A3B3C]'><Link><MdLogout /> Logout</Link></li>
   </>

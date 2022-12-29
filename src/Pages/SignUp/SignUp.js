@@ -24,7 +24,7 @@ const SignUp = () => {
     createUser(email, password)
       .then(result => {
         const user = result.user;
-        handleProfileUpdate(name, image)
+        handleProfileUpdate(name, image, email)
       })
       .catch(error => {
         alert(error.message);
@@ -33,7 +33,7 @@ const SignUp = () => {
   };
 
   // update user profile
-  const handleProfileUpdate = (name, image) => {
+  const handleProfileUpdate = (name, image, email) => {
     const profile = {
       displayName: name,
       photoURL: image,
@@ -41,34 +41,33 @@ const SignUp = () => {
 
     updateUser(profile)
       .then(() => {
-        alert('successfully create user')
-        logOut();
-        navigate('/login');
-        setCreateUserLoading(false);
+        saveUser(name, email)
       })
       .catch(error => { alert(error.message) })
   };
 
 
-  // // save user info
-  // const saveUser = (name, email, role) => {
-  //   const user = { name, email, role };
+  // save user info
+  const saveUser = (name, email) => {
+    const user = { name, email, address: '', education: '' };
 
-  //   fetch('https://used-products-resale-server.vercel.app/users', {
-  //     method: "POST",
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify(user)
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       if (data.acknowledged) {
-  //         toast.success('successfully create user')
-  //         setCreatedUserEmail(email)
-  //       }
-  //     })
-  // };
+    fetch('http://localhost:5000/user', {
+      method: "POST",
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(user)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.acknowledged) {
+          alert('successfully create user')
+          logOut();
+          navigate('/login');
+          setCreateUserLoading(false);
+        }
+      })
+  };
 
   return (
     <section className="h-screen">
