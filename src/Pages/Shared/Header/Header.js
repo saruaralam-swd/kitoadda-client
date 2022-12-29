@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/favicon.png'
 import { MdLogout, MdSettings } from "react-icons/md";
@@ -8,25 +8,41 @@ import { GoThreeBars } from "react-icons/go";
 import { AiOutlineHome } from "react-icons/ai";
 import { FcAbout } from "react-icons/fc";
 import { TbMessageCircle } from "react-icons/tb";
+import { AuthContext } from '../../../Context/AuthProvider';
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => { })
+      .catch(error => {
+        alert(error.message);
+      })
+  };
 
   const menuItem = <>
     <li className='hover:bg-[#3A3B3C]'><Link to='/'><AiOutlineHome />Home</Link></li>
-    <li className='hover:bg-[#3A3B3C]'><Link to='/message'><TbMessageCircle /> Message</Link></li>
+    <li className='hover:bg-[#3A3B3C]'><Link to='/'><TbMessageCircle /> Message</Link></li>
   </>
 
   const profile = <>
     <li className='hover:bg-[#3A3B3C]'>
       <Link>
-        <img src={profilePlaceholder} className='w-10 rounded-full' alt='profile img' />
-        <span className='text-lg'>Md. Saruar Alam</span>
+        {
+          user?.uid ?
+            <img src={user?.photoURL} className='w-10 rounded-full' alt='profile img' />
+            :
+            <img src={profilePlaceholder} className='w-10 rounded-full' alt='profile img' />
+        }
+        <span className='text-lg uppercase'>{user?.displayName}</span>
       </Link>
     </li>
-    <li className='hover:bg-[#3A3B3C]'><a><CgProfile /> Profile </a></li>
-    <li className='hover:bg-[#3A3B3C]'><a><FcAbout /> About me</a></li>
-    <li className='hover:bg-[#3A3B3C]'><a><MdSettings /> Settings</a></li>
-    <li className='hover:bg-[#3A3B3C]'><a><MdLogout /> Logout</a></li>
+    <li className='hover:bg-[#3A3B3C]'><Link><CgProfile /> Profile </Link></li>
+    <li className='hover:bg-[#3A3B3C]'><Link><FcAbout /> About me</Link></li>
+    <li className='hover:bg-[#3A3B3C]'><Link><MdSettings /> Settings</Link></li>
+    <li onClick={handleLogOut} className='hover:bg-[#3A3B3C]'><Link><MdLogout /> Logout</Link></li>
   </>
 
   return (
@@ -53,15 +69,27 @@ const Header = () => {
       </div>
 
       <div className="dropdown dropdown-end">
-        <label tabIndex={1} className="btn btn-ghost btn-circle avatar" >
-          <div className="w-10 rounded-full">
-            <img src={profilePlaceholder} alt='profile img' className=''  />
-          </div>
-        </label>
+        {
+          user?.uid ?
+            <>
+              <label tabIndex={1} className="btn btn-ghost btn-circle avatar" >
+                <div className="w-10 rounded-full">
+                  {
+                    user?.uid ?
+                      <img src={user?.photoURL} alt='profile img' className='' />
+                      :
+                      <img src={profilePlaceholder} alt='profile img' className='' />
+                  }
+                </div>
+              </label>
 
-        <ul tabIndex={0} className="menu menu-compact dropdown-content  p-2 bg-[#242526] text-white rounded-md w-64">
-          {profile}
-        </ul>
+              <ul tabIndex={0} className="menu menu-compact dropdown-content  p-2 bg-[#242526] text-white rounded-md w-64">
+                {profile}
+              </ul>
+            </>
+            :
+            <button> <Link className='inline-block px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full uppercase font-semibold' to='/login'> login </Link> </button>
+        }
       </div>
     </div>
   );

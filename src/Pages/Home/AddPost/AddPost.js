@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import profilePlaceholder from '../../../assets/profile.png'
 import { useForm } from 'react-hook-form';
+import { AuthContext } from '../../../Context/AuthProvider';
 
 const AddPost = () => {
+  const {user} = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
-
   const imageHostKey = process.env.REACT_APP_imageBb_Key;
 
   const handleCreatePost = data => {
-    const image = data?.image[0];
+    let image = data?.image[0];
     const formData = new FormData();
     formData.append('image', image);
 
     if (data.image.length === 0) {
-      console.log('vai image select nai');
-      
+      data.image = "";
+      console.log(data);
     }
     else {
-      console.log('img selected ace');
       fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
         method: "POST",
         body: formData,
       })
         .then(res => res.json())
-        .then(imageData => console.log(imageData?.data?.url));
+        .then(imageData => {
+          data.image = imageData?.data?.url;
+          console.log(data);
+        });
     }
   };
 
