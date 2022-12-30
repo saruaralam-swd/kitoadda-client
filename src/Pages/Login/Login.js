@@ -52,19 +52,19 @@ const Login = () => {
 
               {/* <!-- email --> */}
               <div className="mb-6">
-                <input {...register('email', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Email address" />
+                <input {...register('email', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Email address" />
                 {errors.email && <span className='text-red-600 pl-2'>email required</span>}
               </div>
 
               {/* <!-- password --> */}
               <div className="mb-6">
-                <input {...register('password', { required: true })} type="password" className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Password" />
+                <input {...register('password', { required: true })} type="password" className="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Password" />
                 {errors.password && <span className='text-red-600 pl-2'>password required</span>}
               </div>
 
-              {/* <div className="flex justify-between items-center mb-6">
+              <div className="flex justify-between items-center mb-6">
                 <a href="#!" className="text-gray-800">Forgot password?</a>
-              </div> */}
+              </div>
 
               {
                 signInUserLoading === true ?

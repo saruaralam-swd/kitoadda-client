@@ -92,26 +92,26 @@ const SignUp = () => {
 
               {/* <!-- name --> */}
               <div className="mb-6">
-                <input {...register('name', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Your Name" />
+                <input {...register('name', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Your Name" />
                 {errors.name && <span className='text-red-600 pl-2'>name required</span>}
               </div>
 
 
               {/* <!-- image --> */}
               <div className="mb-6">
-                <input {...register('image')} type="text" className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="PhotoURL" />
+                <input {...register('image')} type="text" className="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="PhotoURL" />
               </div>
 
 
               {/* <!-- email --> */}
               <div className="mb-6">
-                <input {...register('email', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Email address" />
+                <input {...register('email', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Email address" />
                 {errors.email && <span className='text-red-600 pl-2'>email required</span>}
               </div>
 
               {/* <!-- password --> */}
               <div className="mb-6">
-                <input {...register('password', { required: true })} type="password" className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Password" />
+                <input {...register('password', { required: true })} type="password" className="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Password" />
                 {errors.password && <span className='text-red-600 pl-2'>password required</span>}
               </div>
 
@@ -131,7 +131,7 @@ const SignUp = () => {
                   <button className='inline-block px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full uppercase font-semibold'>SignUp</button>
 
               }
-              <p className="text-sm font-semibold mt-2 pt-1 mb-0"> Already have account? <Link to='/login' href="#!" className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out" >signup</Link> </p>
+              <p className="text-sm font-semibold mt-2 pt-1 mb-0"> Already have account? <Link to='/login' href="#!" className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out" >Login</Link> </p>
             </form>
           </div>
         </div>

@@ -5,7 +5,7 @@ import Post from './Post';
 
 const AllPosts = () => {
 
-  const { data: allPosts = [], isLoading } = useQuery({
+  const { data: allPosts = [], isLoading, refetch } = useQuery({
     queryKey: ['allPost'],
     queryFn: async () => {
       const res = await fetch(`http://localhost:5000/allPost`);
@@ -21,7 +21,7 @@ const AllPosts = () => {
   return (
     <div >
       {
-        allPosts.map(postData => <Post key={postData._id} postData={postData}></Post>)
+        allPosts.map(postData => <Post key={postData._id} postData={postData} refetch={refetch}></Post>)
       }
     </div>
   );

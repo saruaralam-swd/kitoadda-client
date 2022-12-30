@@ -31,17 +31,17 @@ const Header = () => {
     <li className='hover:bg-[#3A3B3C]'>
       <Link>
         {
-          user?.uid ?
-            <img src={user?.photoURL} className='w-10 rounded-full' alt='profile img' />
-            :
+          user?.photoURL === null ?
             <img src={profilePlaceholder} className='w-10 rounded-full' alt='profile img' />
+            :
+            <img src={user?.photoURL} className='w-10 rounded-full' alt='profile img' />
         }
-        <span className='text-lg uppercase'>{user?.displayName}</span>
+        <span className='text-lg uppercase font-semibold'>{user?.displayName}</span>
       </Link>
     </li>
-    <li className='hover:bg-[#3A3B3C]'><Link><CgProfile /> Profile </Link></li>
+    <li className='hover:bg-[#3A3B3C]'><Link to='/aboutMe'><CgProfile /> Profile </Link></li>
     <li className='hover:bg-[#3A3B3C]'><Link to='/aboutMe'><FcAbout /> About me</Link></li>
-    <li className='hover:bg-[#3A3B3C]'><Link><MdSettings /> Settings</Link></li>
+    <li className='hover:bg-[#3A3B3C]'><Link to='/aboutMe'><MdSettings /> Settings</Link></li>
     <li onClick={handleLogOut} className='hover:bg-[#3A3B3C]'><Link><MdLogout /> Logout</Link></li>
   </>
 
@@ -75,10 +75,10 @@ const Header = () => {
               <label tabIndex={1} className="btn btn-ghost btn-circle avatar" >
                 <div className="w-10 rounded-full">
                   {
-                    user?.uid ?
-                      <img src={user?.photoURL} alt='profile img' className='' />
-                      :
+                    user?.photoURL === null ?
                       <img src={profilePlaceholder} alt='profile img' className='' />
+                      :
+                      <img src={user?.photoURL} alt='profile img' className='' />
                   }
                 </div>
               </label>

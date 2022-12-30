@@ -25,7 +25,10 @@ const AddPost = () => {
       data.userName = user?.displayName;
       data.userEmail = user?.email;
       data.userImage = user?.photoURL;
-
+      const date = new Date().getTime();
+      data.date = date;
+      data.likeCount = 0;
+      
 
       fetch('http://localhost:5000/postData', {
         method: 'POST',
@@ -56,6 +59,9 @@ const AddPost = () => {
           data.userName = user?.displayName;
           data.userEmail = user?.email;
           data.userImage = user?.photoURL;
+          const date = new Date().getTime();
+          data.date = date;
+          data.likeCount = 0;
 
           fetch('http://localhost:5000/postData', {
             method: 'POST',
@@ -86,10 +92,10 @@ const AddPost = () => {
               user?.uid ?
                 <form onSubmit={handleSubmit(handleCreatePost)}>
                   <div className='flex items-center gap-3'>
-                    {user?.uid ?
-                      <img src={user?.photoURL} className='w-10 rounded-full border' alt='profile img' />
-                      :
+                    {user?.photoURL === null ?
                       <img src={profilePlaceholder} className='w-10 rounded-full border' alt='profile img' />
+                      :
+                      <img src={user?.photoURL} className='w-10 rounded-full border' alt='profile img' />
                     }
                     <div className='w-full'>
                       <input {...register('postTitle', { required: true })} type="text" className='w-full bg-[#2d2c2c] text-white rounded-full px-6 py-2' placeholder='Write your post details..' />

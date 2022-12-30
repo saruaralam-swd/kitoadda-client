@@ -3,6 +3,7 @@ import { AuthContext } from '../../Context/AuthProvider';
 import profilePlaceholder from '../../assets/profile.png'
 import { MdEdit } from "react-icons/md";
 import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 
 const AboutMe = () => {
   const { user } = useContext(AuthContext);
@@ -11,6 +12,18 @@ const AboutMe = () => {
   const handleProfileEdit = (data) => {
     console.log(data);
   };
+
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ['users', user?.email],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5000/users/${user?.email}`);
+      const data = await res.json();
+      return data;
+    }
+  })
+
+  const { address, education } = userData;
+
 
   return (
     <div className='bg-slate-100 h-screen'>
@@ -27,6 +40,8 @@ const AboutMe = () => {
           <div className=' space-y-2'>
             <h2 className='text-2xl font-semibold'>{user?.displayName}</h2>
             <p className='text-md'>{user?.email}</p>
+            <p className='text-md'>{address ? address : ''}</p>
+            <p className='text-md'>{education ? education : ''}</p>
 
             <label htmlFor="updateUserInfoModal" className='flex items-center gap-2 bg-[#4e5052] text-white px-3 py-2 rounded-md cursor-pointer'>
               <MdEdit className='w-6 h-6 inline-block' />
@@ -37,6 +52,7 @@ const AboutMe = () => {
         </div>
       </div>
 
+      {/* modal */}
       <input type="checkbox" id="updateUserInfoModal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
