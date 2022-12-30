@@ -4,8 +4,7 @@ import Loading from '../../Components/Loading';
 import Post from './Post';
 
 const AllPosts = () => {
-
-  const { data: allPosts = [], isLoading, refetch } = useQuery({
+  const { data: allPosts = [], isLoading, refetch:reload } = useQuery({
     queryKey: ['allPost'],
     queryFn: async () => {
       const res = await fetch(`http://localhost:5000/allPost`);
@@ -14,14 +13,16 @@ const AllPosts = () => {
     }
   });
 
+
+
   if (isLoading) {
     return <Loading />
   }
 
   return (
-    <div >
+    <div className='py-5' >
       {
-        allPosts.map(postData => <Post key={postData._id} postData={postData} refetch={refetch}></Post>)
+        allPosts.map(postData => <Post  key={postData._id} postData={postData} reload={reload}></Post>)
       }
     </div>
   );

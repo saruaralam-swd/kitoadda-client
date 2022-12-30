@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
@@ -22,10 +23,10 @@ const Login = () => {
         console.log(user);
         setSignInUserLoading(false)
         navigate('/');
-        alert('login success')
+        toast.success('login success')
       })
       .catch(error => {
-        alert(error.message)
+        toast.error(error.message)
         setSignInUserLoading(false)
       })
   };

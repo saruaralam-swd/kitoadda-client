@@ -22,7 +22,6 @@ const AboutMe = () => {
     }
   })
 
-  const { address, education } = userData;
 
 
   return (
@@ -30,18 +29,18 @@ const AboutMe = () => {
       <div className='pt-10 flex justify-center'>
         <div className='flex gap-5 w-[300px]'>
           <div>
-            {user?.uid ?
-              <img src={user?.photoURL} className='w-[100px] rounded-full' alt='profile img' />
-              :
+            {user?.photoURL === null ?
               <img src={profilePlaceholder} className='w-[100px] rounded-full' alt='profile img' />
+              :
+              <img src={user?.photoURL} className='w-[100px] rounded-full' alt='profile img' />
             }
           </div>
 
           <div className=' space-y-2'>
             <h2 className='text-2xl font-semibold'>{user?.displayName}</h2>
             <p className='text-md'>{user?.email}</p>
-            <p className='text-md'>{address ? address : ''}</p>
-            <p className='text-md'>{education ? education : ''}</p>
+            {/* <p className='text-md'>{address ? address : ''}</p> */}
+            {/* <p className='text-md'>{education ? education : ''}</p> */}
 
             <label htmlFor="updateUserInfoModal" className='flex items-center gap-2 bg-[#4e5052] text-white px-3 py-2 rounded-md cursor-pointer'>
               <MdEdit className='w-6 h-6 inline-block' />

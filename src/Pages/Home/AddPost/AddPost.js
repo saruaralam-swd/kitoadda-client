@@ -84,10 +84,10 @@ const AddPost = () => {
 
 
   return (
-    <div className='flex justify-center h-[300px] my-10'>
+    <div className='flex justify-center h-[300px] py-10'>
       {
         loading === true ? <Loading /> :
-          <div className='w-[500px] border-black'>
+          <div className='w-[600px] rounded-md p-5 pt-5 bg-[#414346]'>
             {
               user?.uid ?
                 <form onSubmit={handleSubmit(handleCreatePost)}>
@@ -98,7 +98,7 @@ const AddPost = () => {
                       <img src={user?.photoURL} className='w-10 rounded-full border' alt='profile img' />
                     }
                     <div className='w-full'>
-                      <input {...register('postTitle', { required: true })} type="text" className='w-full bg-[#2d2c2c] text-white rounded-full px-6 py-2' placeholder='Write your post details..' />
+                      <input {...register('postTitle', { required: true })} type="text" className='w-full bg-[#605c5c] text-white rounded-full px-6 py-2' placeholder='Write your post details..' />
                       {errors.postTitle && <span className='text-red-700 text-sm'>Add your post Description</span>}
                     </div>
                   </div>
@@ -107,7 +107,7 @@ const AddPost = () => {
                   {addPostLoading === true ? <AddPostLoading /> : <button className='w-20 px-3 py-1 mt-5 bg-blue-500 hover:bg-blue-600  text-white rounded-full font-semibold'>Post</button>}
                 </form>
                 :
-                <div className='text-xl font-semibold'>Please <Link to='/login' className='text-blue-500'>login</Link> to add post</div>
+                <div className='text-xl font-semibold text-white'>Please <Link to='/login' className='text-blue-500'>login</Link> to add post</div>
             }
           </div>
       }

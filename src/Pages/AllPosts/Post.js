@@ -1,17 +1,31 @@
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../Context/AuthProvider';
 import { AiFillLike } from "react-icons/ai";
 import { toast } from 'react-hot-toast';
 import profilePlaceholder from '../../assets/profile.png'
 import { useForm } from 'react-hook-form';
+import CommentDetails from './CommentDetails';
+import { AuthContext } from '../../Context/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
 
-const Post = ({ postData, refetch }) => {
+const Post = ({ postData, reload }) => {
+  const { user } = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { _id, likeCount, userName, postTitle, userImage, image } = postData;
   const [like, setLike] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [commentAddLoading, setCommentAddLoading] = useState(false);
 
+  
+  const { data: allComments = [], refetch } = useQuery({
+    queryKey: ['allComments'],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5000/allComments`);
+      const data = await res.json();
+      return data;
+    }
+  });
+  
+  const comments = allComments.filter(comment => comment.postId === _id)
 
   const handleLikeCount = (id) => {
     fetch(`http://localhost:5000/like/${id}`, {
@@ -25,7 +39,7 @@ const Post = ({ postData, refetch }) => {
         if (data.acknowledged) {
           toast.success('like add success');
           setLike(true);
-          refetch();
+          reload();
         }
       })
   };
@@ -33,9 +47,11 @@ const Post = ({ postData, refetch }) => {
   const handleCreateComment = id => {
     if (commentText !== '') {
       setCommentAddLoading(true)
-      
+
       const commentData = {
-        date : new Date().getTime(),
+        userImage: user?.photoURL,
+        userName: user?.displayName,
+        date: new Date().getTime(),
         postId: id,
         commentText: commentText,
       }
@@ -50,16 +66,18 @@ const Post = ({ postData, refetch }) => {
         .then(res => res.json())
         .then(data => {
           if (data.acknowledged) {
-            alert('comment add success')
+            toast.success('comment add success')
             setCommentAddLoading(false);
+            refetch()
+            
           }
         })
     }
   };
 
   return (
-    <div className="flex justify-center">
-      <div className='w-[600px] border-2 p-5 bg-[#242526] text-white rounded-xl'>
+    <div className="flex justify-center mt-3">
+      <div className='w-[600px] border-2 p-5 bg-[#414346] text-white rounded-xl'>
         <div className='flex items-center gap-2 border-b-2 border-slate-600 pb-2'>
           {userImage === null ?
             <img src={profilePlaceholder} className='w-10 rounded-full border' alt='profile img' />
@@ -78,7 +96,7 @@ const Post = ({ postData, refetch }) => {
             <img src={image} className='w-full h-[300px] object-cover rounded-md' alt="" />
         }
 
-        <div className='flex items-center gap-5 py-2'>
+        <div className='flex items-center gap-5 py-2 border-b-2 border-slate-600 pb-2'>
           {
             like === true ?
               <button onClick={() => handleLikeCount(_id)}><AiFillLike className='w-7 h-7 inline-block text-blue-600' /></button>
@@ -105,11 +123,14 @@ const Post = ({ postData, refetch }) => {
               <button onClick={() => handleCreateComment(_id)} className=' bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-1 rounded-full'>send</button>
           }
         </div>
-             
 
+        <div>
+          {
+            comments.map(comment => <CommentDetails key={comment._id} comment={comment} ></CommentDetails>)
+          }
+        </div>
       </div>
     </div >
-
   );
 };
 
