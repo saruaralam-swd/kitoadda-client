@@ -4,14 +4,12 @@ import profilePlaceholder from '../../assets/profile.png'
 import { MdEdit } from "react-icons/md";
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
+import { updateCurrentUser } from 'firebase/auth';
 
 const AboutMe = () => {
   const { user } = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  const handleProfileEdit = (data) => {
-    console.log(data);
-  };
 
   const { data: userData, isLoading } = useQuery({
     queryKey: ['users', user?.email],
@@ -22,7 +20,27 @@ const AboutMe = () => {
     }
   })
 
+  // name update
+  const handleNameUpdate = (name) => {
+    const profile = {
+      displayName: name,
+    };
 
+    updateCurrentUser(profile)
+      .then(() => {
+        toast.success("name update success")
+       })
+      .catch(error => { alert(error.message) })
+  };
+
+  const handleProfileEdit = (data) => {
+    const name = data.name;
+    const email = data.email;
+    const address = data.address;
+    const education = data.education;
+
+    handleNameUpdate(name)
+  };
 
   return (
     <div className='bg-slate-100 h-screen'>
@@ -39,8 +57,8 @@ const AboutMe = () => {
           <div className=' space-y-2'>
             <h2 className='text-2xl font-semibold'>{user?.displayName}</h2>
             <p className='text-md'>{user?.email}</p>
-            {/* <p className='text-md'>{address ? address : ''}</p> */}
-            {/* <p className='text-md'>{education ? education : ''}</p> */}
+            <p className='text-md'>address { } </p>
+            <p className='text-md'>education { } </p>
 
             <label htmlFor="updateUserInfoModal" className='flex items-center gap-2 bg-[#4e5052] text-white px-3 py-2 rounded-md cursor-pointer'>
               <MdEdit className='w-6 h-6 inline-block' />
@@ -59,20 +77,24 @@ const AboutMe = () => {
           <h3 className="text-lg font-bold text-center">Edit profile</h3>
 
           <form onSubmit={handleSubmit(handleProfileEdit)}>
+            {/* name */}
             <div className="mb-6">
               <input {...register('name')} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" defaultValue={user?.displayName} />
             </div>
 
+            {/* email */}
             <div className="mb-6">
               <input {...register('email')} type="email" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" defaultValue={user?.email} />
             </div>
 
+            {/* address */}
             <div className="mb-6">
-              <input {...register('address')} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder='your address' />
+              <input {...register('address')} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder='Your  address' />
             </div>
 
+            {/* education */}
             <div className="mb-6">
-              <input {...register('education')} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder='your education lavel' />
+              <input {...register('education')} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder='Your education' />
             </div>
 
             <div className='divider'></div>

@@ -1,24 +1,27 @@
+import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../../Components/Loading';
 import { AuthContext } from '../../Context/AuthProvider';
 
+
+
 const SignUp = () => {
-  const { createUser, logOut, updateUser } = useContext(AuthContext);
+  const { createUser, logOut, updateUser, googleLogin } = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [createUserLoading, setCreateUserLoading] = useState(false);
   const navigate = useNavigate();
+  const googleProvider = new GoogleAuthProvider();
 
   const handleSignUp = data => {
     setCreateUserLoading(true);
-
     const name = data.name;
     const email = data.email;
     const password = data.password;
     const image = data.image;
-
 
     // create user
     createUser(email, password)
@@ -29,6 +32,39 @@ const SignUp = () => {
       .catch(error => {
         alert(error.message);
         setCreateUserLoading(false);
+      })
+  };
+
+  // google login
+  const handleGoogleLogin = () => {
+    googleLogin(googleProvider)
+      .then(result => {
+        const user = result.user;
+
+        const userData = {
+          name: user?.displayName,
+          email: user?.email,
+          address: '',
+          education: '',
+        }
+
+        fetch('http://localhost:5000/user', {
+          method: "POST",
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(userData)
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.acknowledged) {
+              toast.success('successfully create user')
+              navigate('/');
+            }
+          })
+      })
+      .catch(error => {
+        toast.error(error.message)
       })
   };
 
@@ -45,7 +81,6 @@ const SignUp = () => {
       })
       .catch(error => { alert(error.message) })
   };
-
 
   // save user info
   const saveUser = (name, email) => {
@@ -78,13 +113,14 @@ const SignUp = () => {
           </div>
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
 
+            <div className="flex flex-row items-center justify-center lg:justify-start">
+              <p className="text-lg mb-0 mr-4">Sign Up with</p>
+              <button onClick={handleGoogleLogin} className='bg-slate-100 hover:bg-slate-300  w-10 h-10 flex items-center justify-center rounded-full'>
+                <FcGoogle className='h-6 w-6' />
+              </button>
+            </div>
+
             <form onSubmit={handleSubmit(handleSignUp)} >
-              <div className="flex flex-row items-center justify-center lg:justify-start">
-                <p className="text-lg mb-0 mr-4">Sign Up with</p>
-                <button className='bg-slate-100 hover:bg-slate-300  w-10 h-10 flex items-center justify-center rounded-full'>
-                  <FcGoogle className='h-6 w-6' />
-                </button>
-              </div>
 
               <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5" >
                 <p className="text-center font-semibold mx-4 mb-0">Or</p>

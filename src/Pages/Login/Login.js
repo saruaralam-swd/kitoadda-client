@@ -1,3 +1,4 @@
+import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -6,10 +7,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, googleLogin } = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [signInUserLoading, setSignInUserLoading] = useState(false);
   const navigate = useNavigate();
+  const googleProvider = new GoogleAuthProvider();
 
   // handleLogin
   const handleLogin = data => {
@@ -31,6 +33,42 @@ const Login = () => {
       })
   };
 
+  // google login
+  const handleGoogleLogin = () => {
+    googleLogin(googleProvider)
+      .then(result => {
+        const user = result.user;
+
+        const userData = {
+          name: user?.displayName,
+          email: user?.email,
+          address: '',
+          education: '',
+        }
+
+        fetch('http://localhost:5000/user', {
+          method: "POST",
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(userData)
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.acknowledged) {
+              toast.success('successfully create user')
+              navigate('/');
+            }
+          })
+      })
+      .catch(error => {
+        toast.error(error.message)
+      })
+  };
+
+
+
+
   return (
     <section className="h-screen">
       <div className="px-6 h-full text-gray-800">
@@ -39,13 +77,15 @@ const Login = () => {
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="w-full hidden md:flex" alt="login img" />
           </div>
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
+
+            <div className="flex flex-row items-center justify-center lg:justify-start">
+              <p className="text-lg mb-0 mr-4">Sign in with</p>
+              <button onClick={handleGoogleLogin} className='bg-slate-100 hover:bg-slate-300  w-10 h-10 flex items-center justify-center rounded-full'>
+                <FcGoogle className='h-6 w-6' />
+              </button>
+            </div>
+
             <form onSubmit={handleSubmit(handleLogin)}>
-              <div className="flex flex-row items-center justify-center lg:justify-start">
-                <p className="text-lg mb-0 mr-4">Sign in with</p>
-                <button className='bg-slate-100 hover:bg-slate-300  w-10 h-10 flex items-center justify-center rounded-full'>
-                  <FcGoogle className='h-6 w-6' />
-                </button>
-              </div>
 
               <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5" >
                 <p className="text-center font-semibold mx-4 mb-0">Or</p>
