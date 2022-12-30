@@ -19,7 +19,7 @@ const Post = ({ postData, reload }) => {
   const { data: allComments = [], refetch } = useQuery({
     queryKey: ['allComments'],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/allComments`);
+      const res = await fetch(`https://kitoadda-server.vercel.app/allComments`);
       const data = await res.json();
       return data;
     }
@@ -28,7 +28,7 @@ const Post = ({ postData, reload }) => {
   const comments = allComments.filter(comment => comment.postId === _id)
 
   const handleLikeCount = (id) => {
-    fetch(`http://localhost:5000/like/${id}`, {
+    fetch(`https://kitoadda-server.vercel.app/like/${id}`, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json',
@@ -56,7 +56,7 @@ const Post = ({ postData, reload }) => {
         commentText: commentText,
       }
 
-      fetch('http://localhost:5000/comment', {
+      fetch('https://kitoadda-server.vercel.app/comment', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',

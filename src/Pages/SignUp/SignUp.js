@@ -48,7 +48,7 @@ const SignUp = () => {
           education: '',
         }
 
-        fetch('http://localhost:5000/user', {
+        fetch('https://kitoadda-server.vercel.app/user', {
           method: "POST",
           headers: {
             'content-type': 'application/json',
@@ -86,7 +86,7 @@ const SignUp = () => {
   const saveUser = (name, email) => {
     const user = { name, email, address: '', education: '' };
 
-    fetch('http://localhost:5000/user', {
+    fetch('https://kitoadda-server.vercel.app/user', {
       method: "POST",
       headers: {
         'content-type': 'application/json',

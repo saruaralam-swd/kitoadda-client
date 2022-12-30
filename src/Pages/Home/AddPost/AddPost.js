@@ -30,7 +30,7 @@ const AddPost = () => {
       data.likeCount = 0;
       
 
-      fetch('http://localhost:5000/postData', {
+      fetch('https://kitoadda-server.vercel.app/postData', {
         method: 'POST',
         headers: {
           'content-type': 'application/json'
@@ -63,7 +63,7 @@ const AddPost = () => {
           data.date = date;
           data.likeCount = 0;
 
-          fetch('http://localhost:5000/postData', {
+          fetch('https://kitoadda-server.vercel.app/postData', {
             method: 'POST',
             headers: {
               'content-type': 'application/json'

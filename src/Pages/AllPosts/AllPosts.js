@@ -7,7 +7,7 @@ const AllPosts = () => {
   const { data: allPosts = [], isLoading, refetch:reload } = useQuery({
     queryKey: ['allPost'],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/allPost`);
+      const res = await fetch(`https://kitoadda-server.vercel.app/allPost`);
       const data = await res.json();
       return data;
     }
