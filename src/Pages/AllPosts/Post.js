@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { AiFillLike } from "react-icons/ai";
 import { toast } from 'react-hot-toast';
-import profilePlaceholder from '../../assets/profile.png'
 import { useForm } from 'react-hook-form';
 import CommentDetails from './CommentDetails';
 import { AuthContext } from '../../Context/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
+import { BsThreeDots } from "react-icons/bs";
 
 const Post = ({ postData, reload }) => {
   const { user } = useContext(AuthContext);
@@ -14,8 +14,10 @@ const Post = ({ postData, reload }) => {
   const [like, setLike] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [commentAddLoading, setCommentAddLoading] = useState(false);
+  const [loadComments, setLoadComments] = useState(false);
+  const [showAllPostTitle, setShowAllPostTitle] = useState(false);
 
-  
+
   const { data: allComments = [], refetch } = useQuery({
     queryKey: ['allComments'],
     queryFn: async () => {
@@ -24,28 +26,36 @@ const Post = ({ postData, reload }) => {
       return data;
     }
   });
-  
+
   const comments = allComments.filter(comment => comment.postId === _id)
 
   const handleLikeCount = (id) => {
-    fetch(`https://kitoadda-server.vercel.app/like/${id}`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.acknowledged) {
-          toast.success('like add success');
-          setLike(true);
-          reload();
+    if (!user?.uid) {
+      toast('Please login')
+    }
+    else {
+      fetch(`https://kitoadda-server.vercel.app/like/${id}`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
         }
       })
+        .then(res => res.json())
+        .then(data => {
+          if (data.acknowledged) {
+            toast.success('like add success');
+            setLike(true);
+            reload();
+          }
+        })
+    }
   };
 
   const handleCreateComment = id => {
-    if (commentText !== '') {
+    if (commentText === '' || !user?.uid) {
+      toast('Please login');
+    }
+    else {
       setCommentAddLoading(true)
 
       const commentData = {
@@ -69,41 +79,65 @@ const Post = ({ postData, reload }) => {
             toast.success('comment add success')
             setCommentAddLoading(false);
             refetch()
-            
+
           }
         })
     }
   };
 
+  const x = "Lorem 789011"
+  // const x = "Lorem, ipsum dolor."
+
+  
   return (
     <div className="flex justify-center mt-3">
-      <div className='w-[600px] border-2 p-5 bg-[#414346] text-white rounded-xl'>
-        <div className='flex items-center gap-2 border-b-2 border-slate-600 pb-2'>
-          {userImage === null ?
-            <img src={profilePlaceholder} className='w-10 rounded-full border' alt='profile img' />
-            :
-            <img src={userImage} className='w-10 rounded-full border' alt='profile img' />
-          }
-          <h2 className='text-lg font-semibold'>{userName}</h2>
+      <div className='w-[600px]  p-5 bg-[#242526] text-white rounded-xl'>
+
+        {/* Poster info */}
+        <div className='flex items-center justify-between'>
+          <div className='flex gap-3 items-center'>
+            {userImage === null ?
+              <img src='https://i.ibb.co/Ytsgm3z/profile.png' className='w-10 rounded-full' alt='profile img' />
+              :
+              <img src={userImage} className='w-10 rounded-full' alt='profile img' />
+            }
+
+            <div>
+              <h2 className='text-md font-semibold'>{userName}</h2>
+              <p className='text-xs'>{new Date().toString().slice(4, 24)}</p>
+            </div>
+          </div>
+
+          <button className='w-9 h-9 bg-[#3A3B3C] rounded-full flex items-center justify-center'><BsThreeDots className='h-5 w-5 ' /></button>
         </div>
 
-        <p className='my-2'>{postTitle}</p>
+        {/* post tile */}
+        <div className='mt-2'>
+          <p className='text-md mb-1'>{x.length > 10 && <>{x.slice(0, 10)}</> }</p>
+          <p className='text-md mb-1'>{x.length > 10 || <>{x}</> }</p>
+        </div>
 
-        {
-          image === '' ?
-            <></>
-            :
-            <img src={image} className='w-full h-[300px] object-cover rounded-md' alt="" />
-        }
+        {/* post image */}
+        {image === '' ? <></> : <img src={image} className='w-full h-[300px] object-cover rounded-md' alt="" />}
+
+        {/* display total like and comment */}
+        <div className='mt-3 flex items-center justify-between'>
+          <div className='flex items-center gap-2'>
+            <button className='w-5 h-5 bg-blue-600 rounded-full flex justify-center items-center'><AiFillLike className='w-3 h-3' /></button>
+            <p className='text-xs'>{likeCount}</p>
+          </div>
+          {comments.length > 0 && <button onClick={() => setLoadComments(!loadComments)} className='text-slate-300 hover:underline'>{comments.length} comments</button>}
+        </div>
+
 
         <div className='flex items-center gap-5 py-2 border-b-2 border-slate-600 pb-2'>
           {
             like === true ?
-              <button onClick={() => handleLikeCount(_id)}><AiFillLike className='w-7 h-7 inline-block text-blue-600' /></button>
+              <button onClick={() => handleLikeCount(_id)}><AiFillLike className='w- h-7 inline-block text-blue-600' /></button>
               :
-              <button onClick={() => handleLikeCount(_id)}><AiFillLike className='w-7 h-7 inline-block ' /></button>
+              <button onClick={() => handleLikeCount(_id)}><AiFillLike className='w- h-7 inline-block ' /></button>
           }
-          <p>{likeCount}</p>
+
 
 
           <input onMouseOut={(e) => setCommentText(e.target.value)} defaultValue={commentText} type="text" className=' w-full px-3 py-2 pl-4 bg-slate-600  text-white rounded-full' placeholder='write your comment...' />
@@ -124,11 +158,8 @@ const Post = ({ postData, reload }) => {
           }
         </div>
 
-        <div>
-          {
-            comments.map(comment => <CommentDetails key={comment._id} comment={comment} ></CommentDetails>)
-          }
-        </div>
+        {/* display comments */}
+        {loadComments && comments.map(comment => <CommentDetails key={comment._id} comment={comment} ></CommentDetails>)}
       </div>
     </div >
   );

@@ -8,9 +8,9 @@ const CommentDetails = ({ comment }) => {
   return (
     <div className='mt-2'>
       <div className='grid grid-cols-12 gap-4'>
-        <img src={profilePlaceholder} className=' col-span-1 w-10 rounded-full border' alt='profile img' />
+        <img src={profilePlaceholder} className='col-span-1 w-10 rounded-full border' alt='profile img' />
 
-        <div className='bg-[#54565a] rounded-md col-span-11 pl-2'>
+        <div className='col-span-11 '>
           <h2 className='mb-2 font-semibold'>Md. Saruar Alalm</h2>
           <p>{commentText}</p>
         </div>

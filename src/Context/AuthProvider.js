@@ -34,12 +34,9 @@ const AuthProvider = ({ children }) => {
     return updateProfile(auth.currentUser, profile);
   };
 
-
   const updateUserEmail = (email) => {
     return updateEmail(auth.currentUser, email);
   };
-
-
 
 
   useEffect(() => {

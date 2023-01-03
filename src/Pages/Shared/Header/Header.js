@@ -7,7 +7,6 @@ import profilePlaceholder from '../../../assets/profile.png';
 import { GoThreeBars } from "react-icons/go";
 import { AiOutlineHome } from "react-icons/ai";
 import { FcAbout } from "react-icons/fc";
-import { TbMessageCircle } from "react-icons/tb";
 import { AuthContext } from '../../../Context/AuthProvider';
 
 const Header = () => {
@@ -46,7 +45,7 @@ const Header = () => {
   </>
 
   return (
-    <div className="navbar justify-between bg-[#242526] text-white">
+    <div className="navbar justify-between bg-[#242526] text-white  sticky top-0 z-[999]">
       <div>
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden hover:bg-[#3A3B3C]">

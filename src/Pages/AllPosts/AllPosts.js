@@ -13,8 +13,6 @@ const AllPosts = () => {
     }
   });
 
-
-
   if (isLoading) {
     return <Loading />
   }
