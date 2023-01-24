@@ -15,7 +15,9 @@ const Post = ({ postData, reload }) => {
   const [commentText, setCommentText] = useState('');
   const [commentAddLoading, setCommentAddLoading] = useState(false);
   const [loadComments, setLoadComments] = useState(false);
-  const [showAllPostTitle, setShowAllPostTitle] = useState(false);
+  const [seeAllText, setSeeAllText] = useState(false);
+
+  console.log(seeAllText);
 
 
   const { data: allComments = [], refetch } = useQuery({
@@ -85,13 +87,13 @@ const Post = ({ postData, reload }) => {
     }
   };
 
-  const x = "Lorem 789011"
-  // const x = "Lorem, ipsum dolor."
+  const x = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem aliquam labore at tempora doloremque facilis aspernatur. Quaerat fugit officiis a!";
 
-  
+
   return (
     <div className="flex justify-center mt-3">
       <div className='w-[600px]  p-5 bg-[#242526] text-white rounded-xl'>
+
 
         {/* Poster info */}
         <div className='flex items-center justify-between'>
@@ -113,8 +115,11 @@ const Post = ({ postData, reload }) => {
 
         {/* post tile */}
         <div className='mt-2'>
-          <p className='text-md mb-1'>{x.length > 10 && <>{x.slice(0, 10)}</> }</p>
-          <p className='text-md mb-1'>{x.length > 10 || <>{x}</> }</p>
+          <p className='text-md mb-1'>
+            {x.length > 10 && <>{x.slice(0, 5)} <span onClick={() => setSeeAllText(true)}>...See more</span></>}
+            {seeAllText && <>{x.slice(5, x.length)}</>}
+          </p>
+
         </div>
 
         {/* post image */}

@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import Loading from '../../../Components/Loading';
 import AddPost from '../AddPost/AddPost';
-import profilePlaceholder from '../../../assets/profile.png';
-import { AuthContext } from '../../../Context/AuthProvider';
 import HomePost from './HomePost';
 
 const Home = () => {
+  const [file, setFile] = useState('');
 
   const { data: allPosts = [], isLoading } = useQuery({
     queryKey: ['allPost'],
@@ -17,14 +17,13 @@ const Home = () => {
     }
   });
 
-  if(isLoading) {
+  if (isLoading) {
     return <Loading />
   }
 
   return (
-    <div>
+    <div className='bg-[#18191A]'>
       <AddPost />
-
       <div>
         {
           allPosts.map(postData => <HomePost key={postData._id} postData={postData}></HomePost>)

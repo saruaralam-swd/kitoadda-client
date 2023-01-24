@@ -83,7 +83,6 @@ const AddPost = () => {
     }
   };
 
-
   return (
     <div className='flex justify-center  py-10'>
       {
@@ -93,24 +92,20 @@ const AddPost = () => {
               user?.uid ?
                 <form onSubmit={handleSubmit(handleCreatePost)}>
                   <div className='flex items-center gap-3'>
-                    {user?.photoURL === null ?
-                      <img src={profilePlaceholder} className='w-10 rounded-full border' alt='profile img' />
-                      :
-                      <img src={user?.photoURL} className='w-10 rounded-full border' alt='profile img' />
+                    {
+                      user?.photoURL === null ?
+                        <img src={profilePlaceholder} className='w-10 rounded-full border' alt='profile img' />
+                        :
+                        <img src={user?.photoURL} className='w-10 rounded-full border' alt='profile img' />
                     }
 
-                    {/* post Description */}
                     <div className='w-full'>
                       <input {...register('postTitle', { required: true })} type="text" className="form-control block w-full  px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder='Write your post details..' />
                       {errors.postTitle && <span className='text-red-700 text-sm'>Add your post Description</span>}
                     </div>
                   </div>
 
-                  {/* choses image */}
-                  {/* <input {...register('image')} type="file" className="mt-5 file-input file-input-bordered file-input-primary w-full" /> */}
-                  <input {...register('image')} type="file" 
-                  className="bg h-28 cursor-pointer block w-full mt-5 rounded-md px-4 py-2  bg-white"/>
-
+                  <input  {...register('image')} type="file" className="cursor-pointer w-full mt-5 rounded-md px-4 py-2" />
                   {addPostLoading === true ? <AddPostLoading /> : <button className='w-20 px-3 py-1 mt-5 bg-blue-500 hover:bg-blue-600  text-white rounded-full font-semibold'>Post</button>}
                 </form>
                 :

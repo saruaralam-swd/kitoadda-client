@@ -30,14 +30,6 @@ const HomePost = ({ postData }) => {
           <button><AiFillLike className='w-5 h-5 inline-block' /></button>
           <p className='m-0'>{likeCount}</p>
         </div>
-       
-
-
-        {/* <div>
-          {
-            comments.map(comment => <CommentDetails key={comment._id} comment={comment} ></CommentDetails>)
-          }
-        </div> */}
       </div>
     </div >
   );
